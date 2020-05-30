@@ -35,8 +35,7 @@ packages:
       name: charcode
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< Updated upstream
-    version: "1.1.2"
+    version: "1.1.3"
   cloud_firestore:
     dependency: "direct dev"
     description:
@@ -44,9 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
-=======
-    version: "1.1.3"
->>>>>>> Stashed changes
   collection:
     dependency: transitive
     description:
@@ -173,8 +169,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< Updated upstream
-    version: "2.1.4"
+    version: "2.1.12"
   js:
     dependency: transitive
     description:
@@ -182,9 +177,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
-=======
-    version: "2.1.12"
->>>>>>> Stashed changes
   matcher:
     dependency: transitive
     description:
@@ -206,6 +198,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.4"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.0"
   petitparser:
     dependency: transitive
     description:
@@ -303,9 +302,5 @@ packages:
     source: hosted
     version: "3.6.1"
 sdks:
-<<<<<<< Updated upstream
   dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.4 <2.0.0"
-=======
-  dart: ">=2.6.0 <3.0.0"
->>>>>>> Stashed changes

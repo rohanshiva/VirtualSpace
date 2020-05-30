@@ -2,7 +2,7 @@ import './FadeAnimation.dart';
 import './Shoes.dart';
 import './brandSelector.dart';
 import 'package:flutter/material.dart';
-
+import './Cart.dart';
 void main() => runApp(
   MaterialApp(
     debugShowCheckedModeBanner: false,
