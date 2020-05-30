@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Ramko9999/VirtualSpace#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.10.0",
+    "moment": "^2.26.0"
   }
 }

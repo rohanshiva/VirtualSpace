@@ -1,3 +1,5 @@
+
+import 'package:client/auth/auth.dart';
 import './FadeAnimation.dart';
 import './Shoes.dart';
 import './brandSelector.dart';
@@ -6,8 +8,8 @@ import './Cart.dart';
 void main() => runApp(
   MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage()
-  )
+    home: HomePage() 
+    )
 );
 
 class HomePage extends StatelessWidget {
@@ -45,6 +47,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 
   Widget makeItem({image, tag, context}) {
     return Hero(
@@ -111,3 +114,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
