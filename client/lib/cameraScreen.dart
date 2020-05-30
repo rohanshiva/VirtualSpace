@@ -59,7 +59,7 @@ class CameraScreenState extends State<CameraScreen> {
             child: new CameraPreview(controller),
           ),
         ),
-        BrandSelector(brands: ["Shoes","Pants","Shirts"]),
+        // BrandSelector(brands: ["Shoes","Pants","Shirts"]),
       ],
     ),
     floatingActionButton: FloatingActionButton(

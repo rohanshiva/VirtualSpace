@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter/src/widgets/container.dart';
 
 class Display extends StatefulWidget{
   Function _loadFunc;
@@ -29,11 +30,28 @@ class _DisplayState extends State<Display>{
         this.isLoading = false;
       });
       _query.addListener(() {
-          
+        setState(() {
+          this._data = runQuery(this._query.text);
+        });
         _listScroller.jumpTo(0.0);
       });
     });
     }
+  }
+
+  List<Map> runQuery(String query){
+   return  _persisted.where((element){
+      String name = element['name'];
+      return name.startsWith(query);
+    }).toList();
+  } 
+
+
+  @override
+  void dispose(){
+    _listScroller.dispose();
+    _query.dispose();
+    super.dispose();
   }
 
 
@@ -60,7 +78,7 @@ class _DisplayState extends State<Display>{
             width: screenWidth * .9,
             child: Column(children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                 child: Row(children: <Widget>[
                   Expanded(
                     child: Container(
@@ -69,19 +87,24 @@ class _DisplayState extends State<Display>{
                         onTap: () {
                           _listScroller.jumpTo(0.0);
                         },
-                        decoration: InputDecoration(labelText: "Shoe Name"),
+                        decoration: InputDecoration(labelText: "Name: "),
                       ),
                     ),
                   ),
                 ])),
-                ListView.builder(
-                  controller: _listScroller,
-                  itemCount: _data.length,
-                  shrinkWrap: true,
-                  itemBuilder:(context, i){
-                    return createTile(_data[i]);
-                  },
-                   )
+                Flexible(
+                  child: Container(
+                    child: ListView.builder(
+                      controller: _listScroller,
+                      itemCount: _data.length,
+                      shrinkWrap: true,
+                      itemBuilder:(context, i){
+                        return createTile(_data[i]);
+                      },
+                       ),
+                       height: screenHeight * 0.8,
+                  ),
+                )
               ]
               )));
   }
