@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  camera:
   flutter:
     sdk: flutter
   simple_animations: ^1.3.3

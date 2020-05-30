@@ -2,13 +2,20 @@ import './FadeAnimation.dart';
 import './Shoes.dart';
 import './brandSelector.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:camera/camera.dart';
+import './cameraScreen.dart';
 
-void main() => runApp(
+List<CameraDescription> cameras;
+Future<Null>  main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  runApp(
   MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage()
-  )
-);
+    home: HomePage() 
+    )
+);}
 
 class HomePage extends StatelessWidget {
   @override
