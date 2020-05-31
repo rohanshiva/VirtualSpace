@@ -1,7 +1,6 @@
+import 'package:client/display/product.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
-import './FadeAnimation.dart';
-import './Shoes.dart';
+import '../util/animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BrandSelector extends StatefulWidget {
@@ -128,7 +127,7 @@ class _BrandSelectorState extends State<BrandSelector> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Shoes(
+                  builder: (context) => Product(
                         image: image,
                         id: id,
                         data:data,

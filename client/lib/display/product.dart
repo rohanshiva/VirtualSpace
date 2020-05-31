@@ -1,22 +1,47 @@
-import 'package:client/cameraScreen.dart';
-
-import './FadeAnimation.dart';
+import 'package:client/camera/camera.dart';
+import 'package:client/model/shirt.dart';
+import 'package:client/model/shoe.dart';
+import 'package:client/util/animation.dart';
+import 'package:client/util/transition.dart';
 import 'package:flutter/material.dart';
-import './global/global.dart';
-import './cameraScreen.dart';
+import "../global/context.dart";
 
 
-class Shoes extends StatefulWidget {
+
+class Product extends StatefulWidget {
   final String image;
   final String id;
   final Map data;
-  const Shoes({Key key, this.image, this.id, this.data}) : super(key: key);
+  const Product({Key key, this.image, this.id, this.data}) : super(key: key);
 
   @override
-  _ShoesState createState() => _ShoesState();
+  _ProductState createState() => _ProductState();
 }
 
-class _ShoesState extends State<Shoes> {
+class _ProductState extends State<Product> {
+
+
+  Widget getAddButton(){
+
+    Function callback = (){
+      Shop.of(context).removeFromCart(widget.data);
+    };
+    String text = "Remove from Cart";
+    if(!Shop.of(context).cart.containsKey(widget.id)){
+      callback = (){
+        Shop.of(context).addToCart(widget.data);
+      };
+      text = "Add to Cart";
+    }
+    return RaisedButton(
+    padding: EdgeInsets.all(10),
+    onPressed: callback,
+    color: Colors.white,
+    textColor: Colors.black,
+    child: Text(text,
+    style:TextStyle(fontSize: 16)),
+  );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +70,7 @@ class _ShoesState extends State<Shoes> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
                       child: Container(
                         child: Icon(
@@ -180,17 +205,7 @@ class _ShoesState extends State<Shoes> {
                                                 left: 10,
                                                 right: 10,
                                                 top: 10),
-                                            child: RaisedButton(
-                                              padding: EdgeInsets.all(10),
-                                              onPressed: () {
-                                                Global.addToCart(widget.data);
-                                              },
-                                              color: Colors.white,
-                                              textColor: Colors.black,
-                                              child: Text('Add to Cart',
-                                                  style:
-                                                      TextStyle(fontSize: 16)),
-                                            ),
+                                            child: getAddButton()
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(
@@ -201,10 +216,16 @@ class _ShoesState extends State<Shoes> {
                                             child: RaisedButton(
                                               padding: EdgeInsets.all(10),
                                               onPressed: () {
+                                                print(widget.data);
+                                                if(widget.data["name"].toString().contains("Shirt")){
+                                                  Shop.of(context).changeShirt(widget.data);
+                                                }
+                                                else{
+                                                  Shop.of(context).changeShoe(widget.data);
+                                                }
                                                 Navigator.of(context).push(
-                                                    MaterialPageRoute(
+                                                    NoTransition(
                                                         builder: (context) {
-                                                  print("Pressed");
                                                   return CameraScreen();
                                                 }));
                                               },

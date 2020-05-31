@@ -1,4 +1,7 @@
+import 'package:client/util/transition.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
 
 
 class ThankYou extends StatefulWidget {
@@ -39,6 +42,15 @@ class _ThankYouState extends State<ThankYou> {
                height: _height,
                child: Image.asset('assets/images/check.png'),
              ),
+             Container(child: 
+             RaisedButton(
+               color: Colors.white,
+                child: Text('Back to Explore', style: TextStyle(fontFamily: "Montserrat", fontSize: 16),),
+               onPressed: (){
+               Navigator.of(context).push(NoTransition(builder: (BuildContext context){
+                 return HomePage();
+               }));
+             },),)
            ],
          ),
        ),

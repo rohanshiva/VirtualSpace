@@ -1,32 +1,52 @@
+import 'package:client/display/product.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
-import './FadeAnimation.dart';
-import './Shoes.dart';
-import './global/global.dart';
-import './thankYou.dart';
+import "../util/animation.dart";
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Cart extends StatefulWidget {
+class BrandSelector extends StatefulWidget {
+  final List<String> brands;
+  BrandSelector({@required this.brands});
   @override
-  _CartState createState() => new _CartState();
-
+  _BrandSelectorState createState() => new _BrandSelectorState();
 }
 
-class _CartState extends State<Cart> {
+class _BrandSelectorState extends State<BrandSelector> {
+  int _currentIndex = 0;
+  bool _isSelected;
+  Map data = {"Shoes": [], "Shirts": []};
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      fetchData().then((data) {
+        setState(() {
+          this.data = data;
+        });
+      });
+    }
+  }
 
-  List<Widget> getCartItems(){
-      List<Map> data = Global.cart;
-      List<Widget> widgets = [];
-      widgets.add(Container(
-            alignment: Alignment.topLeft,
-            padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
-            child: Text(
-              'Cart',
-              textAlign: TextAlign.left,
-              style: TextStyle(fontFamily: "Montserrat", fontSize: 32),
-            ),
-          ),);
-         data.forEach((e) {
-          widgets.add(FadeAnimation(
+  Future<Map> fetchData() async {
+    Map<String, dynamic> data = {"Shoes": [], "Shirts": []};
+    QuerySnapshot shoeData =
+        await Firestore.instance.collection("Shoe").getDocuments();
+    shoeData.documents.forEach((DocumentSnapshot snapshot) {
+      Map dat = snapshot.data;
+      dat["type"] =  "Shoe";
+      data['Shoes'].add(dat);
+    });
+    QuerySnapshot shirtData =
+        await Firestore.instance.collection("Shirt").getDocuments();
+    shirtData.documents.forEach((DocumentSnapshot snapshot) {
+      Map dat = snapshot.data;
+      dat["type"] =  "Shirt";
+      data['Shirts'].add(dat);
+    });
+    return data;
+  }
+  List<Widget> getList(List data) {
+    return data.map((e) {
+      return FadeAnimation(
               1.5,
               makeItem(
                   image: e["imageUrl"],
@@ -36,49 +56,70 @@ class _CartState extends State<Cart> {
                   name: e["name"],
                   price: e["price"],
                   id: e["id"],
-                  data: e)));
-            
- });
-    widgets.add(Container(
-            alignment: Alignment.bottomLeft,
-            padding: EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 10),
-            child: RaisedButton(
-              padding: EdgeInsets.all(10),
-              onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                print("Pressed");
-                return ThankYou();
-              }));},
-              color: Colors.black,
-              textColor: Colors.white,
-              child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
+                  data: e)
+          );
+    }).toList();
+  }
+    Widget products(int index) {
+      return Column(
+        children: getList(data[widget.brands[_currentIndex]])
+      );
+  }
+
+  List<Widget> _buildShoesBrands() {
+    return widget.brands.map((brand) {
+      var index = widget.brands.indexOf(brand);
+      _isSelected = _currentIndex == index;
+      return Padding(
+        padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              _currentIndex = index;
+            });
+            // print(widget.brands[_currentIndex]);
+            // switch(widget.brands[_currentIndex]) {
+            //   case "Shoes" : { Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+            //       return ShoeDisplayScreen();
+            //     }));}
+            //     break;
+               
+            //    case "Pants" : { Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+            //       return PantsDisplayScreen();
+            //     }));}
+            //     break;
+            //   default:
+            //      { Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+            //       return ShirtsDisplayScreen();
+            //     }));}
+            //     break;
+            // }
+          },
+          child: Text(
+            brand,
+            style: TextStyle(
+              color: _isSelected ? Colors.black : Colors.grey,
+              fontSize: _isSelected ? 22 : 16,
+              fontFamily: "Montserrat",
             ),
-          ),);
-          return widgets;
+          ),
+        ),
+      );
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: GestureDetector(
-          onTap: () {},
-          child: Icon(Icons.sort, color: Colors.black),
+    return Column(
+      children: <Widget>[
+        Row(
+          children: _buildShoesBrands(),
         ),
-        brightness: Brightness.light,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.black,
-            ),
-          )
-        ],
-      ),
-      body: Column(
-        children: getCartItems()
-      ),
+        SizedBox(
+          height: 20,
+        ),
+        products(_currentIndex),
+      ],
     );
   }
 
@@ -90,10 +131,10 @@ class _CartState extends State<Cart> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Shoes(
+                  builder: (context) => Product(
                         image: image,
                         id: id,
-                        data: data,
+                        data:data,
                       )));
         },
         child: Container(

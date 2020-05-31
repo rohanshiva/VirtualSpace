@@ -1,12 +1,18 @@
 import 'package:client/auth/auth.dart';
-import './FadeAnimation.dart';
-import './Shoes.dart';
-import './brandSelector.dart';
+import 'package:client/display/product.dart';
 import 'package:flutter/material.dart';
-import './Cart.dart';
+import './shop/cart.dart';
+import 'global/context.dart';
+import 'shop/tab.dart';
+import 'util/animation.dart';
+
 
 void main() =>
-    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
+    runApp(
+      Shop(
+       child: MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()) 
+      )
+    );
 
 class HomePage extends StatelessWidget {
   @override
@@ -21,18 +27,7 @@ class HomePage extends StatelessWidget {
         ),
         brightness: Brightness.light,
         actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                print("Pressed");
-                return Cart();
-              }));
-            },
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.black,
-            ),
-          )
+          CartButton()
         ],
       ),
       body: SingleChildScrollView(
@@ -56,7 +51,7 @@ class HomePage extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Shoes(
+                  builder: (context) => Product(
                         image: image,
                       )));
         },

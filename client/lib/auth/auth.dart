@@ -1,4 +1,6 @@
+import 'package:client/util/transition.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../global/global.dart';
@@ -17,6 +19,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     GoogleSignInAccount userAccount = await _googleSignIn.signIn();
     User user = User(userAccount.id, userAccount.email, userAccount.photoUrl);
     Global.user = user;
+    print(Global.user);
+    Navigator.of(context).push(NoTransition(builder: (BuildContext context){
+      return HomePage();
+    }));
   }
 
   @override
@@ -31,10 +37,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             Flexible(
                 flex: 4,
                 child: Align(
-                  alignment: Alignment(0.0, -0.6),
+                  alignment: Alignment(0.0, 0.0),
                   child: Container(
-                    width: screenWidth - 50,
-                    child: Text("Virtu Space", style:TextStyle(fontSize: 20)),
+                    child: Text("Virtual Closet", style:TextStyle(fontSize: 20)),
                   ),
                 )),
             Spacer(flex: 2),
@@ -43,7 +48,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 child: Container(
                     child: Column(children: [
                   Container(
-                      width: screenWidth * 0.85,
+                      width: screenWidth * 0.7,
                       height: screenHeight * 0.08,
                       child: new RaisedButton(
                         child: Text('Log In With Google',
@@ -53,8 +58,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         onPressed: handleLogin,
                         textColor: Colors.white,
                         color: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
                       )),
                 ]))),
           ]),

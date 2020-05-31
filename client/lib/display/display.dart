@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter/src/widgets/container.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
 
 class Display extends StatefulWidget{
   Function _loadFunc;
@@ -108,4 +109,18 @@ class _DisplayState extends State<Display>{
               ]
               )));
   }
+}
+
+
+Future<Map> fetchData() async {
+  Map<String, dynamic> data = {"Shoes":[], "Shirts":[]};
+ QuerySnapshot shoeData = await Firestore.instance.collection("Shoe").getDocuments();
+ shoeData.documents.forEach((DocumentSnapshot snapshot){
+   data['Shoes'].add(snapshot.data);
+ });
+ QuerySnapshot shirtData = await Firestore.instance.collection("Shirt").getDocuments();
+ shirtData.documents.forEach((DocumentSnapshot snapshot){
+   data['Shirt'].add(snapshot.data);
+ });
+  return data;
 }
