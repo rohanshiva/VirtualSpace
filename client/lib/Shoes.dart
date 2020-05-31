@@ -1,10 +1,12 @@
 import './FadeAnimation.dart';
 import 'package:flutter/material.dart';
+import './global/global.dart';
 
 class Shoes extends StatefulWidget {
   final String image;
-
-  const Shoes({Key key, this.image}) : super(key: key);
+  final String id;
+  final Map data;
+  const Shoes({Key key, this.image,  this.id, this.data}) : super(key: key);
 
   @override
   _ShoesState createState() => _ShoesState();
@@ -16,13 +18,13 @@ class _ShoesState extends State<Shoes> {
     return Scaffold(
       body: SingleChildScrollView(
           child: Hero(
-        tag: 'red',
+        tag: widget.id,
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(widget.image), fit: BoxFit.cover),
+                  image: NetworkImage(widget.image), fit: BoxFit.cover),
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey[400],
@@ -176,10 +178,12 @@ class _ShoesState extends State<Shoes> {
                                                 top: 10),
                                             child: RaisedButton(
                                               padding: EdgeInsets.all(10),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Global.addToCart(widget.data);
+                                              },
                                               color: Colors.white,
                                               textColor: Colors.black,
-                                              child: Text('Buy Now',
+                                              child: Text('Add to Cart',
                                                   style:
                                                       TextStyle(fontSize: 16)),
                                             ),

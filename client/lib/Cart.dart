@@ -2,13 +2,60 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import './FadeAnimation.dart';
 import './Shoes.dart';
+import './global/global.dart';
+import './thankYou.dart';
 
 class Cart extends StatefulWidget {
   @override
   _CartState createState() => new _CartState();
+
 }
 
 class _CartState extends State<Cart> {
+
+  List<Widget> getCartItems(){
+      List<Map> data = Global.cart;
+      List<Widget> widgets = [];
+      widgets.add(Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+            child: Text(
+              'Cart',
+              textAlign: TextAlign.left,
+              style: TextStyle(fontFamily: "Montserrat", fontSize: 32),
+            ),
+          ),);
+         data.forEach((e) {
+          widgets.add(FadeAnimation(
+              1.5,
+              makeItem(
+                  image: e["imageUrl"],
+                  tag: 'red',
+                  context: context,
+                  brand: e["brand"],
+                  name: e["name"],
+                  price: e["price"],
+                  id: e["id"],
+                  data: e)));
+            
+ });
+    widgets.add(Container(
+            alignment: Alignment.bottomLeft,
+            padding: EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 10),
+            child: RaisedButton(
+              padding: EdgeInsets.all(10),
+              onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                print("Pressed");
+                return ThankYou();
+              }));},
+              color: Colors.black,
+              textColor: Colors.white,
+              child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
+            ),
+          ),);
+          return widgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,53 +77,14 @@ class _CartState extends State<Cart> {
         ],
       ),
       body: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
-            child: Text(
-              'Cart',
-              textAlign: TextAlign.left,
-              style: TextStyle(fontFamily: "Montserrat", fontSize: 32),
-            ),
-          ),
-          FadeAnimation(
-              1.5,
-              makeItem(
-                  image: 'assets/images/one.jpg',
-                  tag: 'red',
-                  context: context)),
-          FadeAnimation(
-              1.6,
-              makeItem(
-                  image: 'assets/images/two.jpg',
-                  tag: 'blue',
-                  context: context)),
-          FadeAnimation(
-              1.7,
-              makeItem(
-                  image: 'assets/images/three.jpg',
-                  tag: 'white',
-                  context: context)),
-          Container(
-            alignment: Alignment.bottomLeft,
-            padding: EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 10),
-            child: RaisedButton(
-              padding: EdgeInsets.all(10),
-              onPressed: () {},
-              color: Colors.black,
-              textColor: Colors.white,
-              child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
-            ),
-          ),
-        ],
+        children: getCartItems()
       ),
     );
   }
 
-  Widget makeItem({image, tag, context}) {
+  Widget makeItem({image, tag, context, brand, name, price, id, data}) {
     return Hero(
-      tag: tag,
+      tag: id,
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -84,17 +92,19 @@ class _CartState extends State<Cart> {
               MaterialPageRoute(
                   builder: (context) => Shoes(
                         image: image,
+                        id: id,
+                        data: data,
                       )));
         },
         child: Container(
-          height: 111,
-          width: 320,
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.only(bottom: 20, left: 2, right: 2),
+          height: 250,
+          width: double.infinity,
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.only(bottom: 20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image:
-                  DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+                  DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey[400],
@@ -115,7 +125,7 @@ class _CartState extends State<Cart> {
                         FadeAnimation(
                             1,
                             Text(
-                              "Sneakers",
+                              name,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
@@ -127,23 +137,36 @@ class _CartState extends State<Cart> {
                         FadeAnimation(
                             1.1,
                             Text(
-                              "Nike",
+                              brand,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             )),
                       ],
                     ),
                   ),
-                 
+                  FadeAnimation(
+                      1.2,
+                      Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: Center(
+                          child: Icon(
+                            Icons.favorite_border,
+                            size: 20,
+                          ),
+                        ),
+                      ))
                 ],
               ),
               FadeAnimation(
                   1.2,
                   Text(
-                    "100\$",
+                    "${price}",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold),
                   )),
             ],

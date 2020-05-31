@@ -1,16 +1,12 @@
-
 import 'package:client/auth/auth.dart';
 import './FadeAnimation.dart';
 import './Shoes.dart';
 import './brandSelector.dart';
 import 'package:flutter/material.dart';
 import './Cart.dart';
-void main() => runApp(
-  MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomePage() 
-    )
-);
+
+void main() =>
+    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
 
 class HomePage extends StatelessWidget {
   @override
@@ -23,11 +19,19 @@ class HomePage extends StatelessWidget {
           onTap: () {},
           child: Icon(Icons.sort, color: Colors.black),
         ),
-        
         brightness: Brightness.light,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.black,),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                print("Pressed");
+                return Cart();
+              }));
+            },
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.black,
+            ),
           )
         ],
       ),
@@ -36,11 +40,7 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.only(top: 50, left: 20, bottom: 20, right: 20),
           child: Column(
             children: <Widget>[
-              BrandSelector(brands: ["Shoes", "Clothes", "Pants"]),
-              SizedBox(height: 20,),
-              FadeAnimation(1.5, makeItem(image: 'assets/images/one.jpg', tag: 'red', context: context)),
-              FadeAnimation(1.6, makeItem(image: 'assets/images/two.jpg', tag: 'blue', context: context)),
-              FadeAnimation(1.7, makeItem(image: 'assets/images/three.jpg', tag: 'white', context: context)),
+              BrandSelector(brands: ["Shoes", "Shirts", "Pants"]),
             ],
           ),
         ),
@@ -48,13 +48,17 @@ class HomePage extends StatelessWidget {
     );
   }
 
-
   Widget makeItem({image, tag, context}) {
     return Hero(
       tag: tag,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Shoes(image: image,)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Shoes(
+                        image: image,
+                      )));
         },
         child: Container(
           height: 250,
@@ -62,19 +66,15 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.all(20),
           margin: EdgeInsets.only(bottom: 20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: AssetImage(image),
-              fit: BoxFit.cover
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey[400],
-                blurRadius: 10,
-                offset: Offset(0, 10)
-              )
-            ]
-          ),
+              borderRadius: BorderRadius.circular(20),
+              image:
+                  DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey[400],
+                    blurRadius: 10,
+                    offset: Offset(0, 10))
+              ]),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,27 +86,53 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        FadeAnimation(1, Text("Sneakers", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),)),
-                        SizedBox(height: 10,),
-                        FadeAnimation(1.1, Text("Nike", style: TextStyle(color: Colors.white, fontSize: 20),)),
-
+                        FadeAnimation(
+                            1,
+                            Text(
+                              "Sneakers",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FadeAnimation(
+                            1.1,
+                            Text(
+                              "Nike",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )),
                       ],
                     ),
                   ),
-                  FadeAnimation(1.2, Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white
-                    ),
-                    child: Center(
-                      child: Icon(Icons.favorite_border, size: 20,),
-                    ),
-                  ))
+                  FadeAnimation(
+                      1.2,
+                      Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: Center(
+                          child: Icon(
+                            Icons.favorite_border,
+                            size: 20,
+                          ),
+                        ),
+                      ))
                 ],
               ),
-              FadeAnimation(1.2, Text("100\$", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),)),              
+              FadeAnimation(
+                  1.2,
+                  Text(
+                    "100\$",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
+                  )),
             ],
           ),
         ),
@@ -114,4 +140,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
