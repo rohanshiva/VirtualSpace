@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import './brandSelector.dart';
 import './FadeAnimation.dart';
 import './Shoes.dart';
+import './Cart.dart';
 
 class CameraScreen extends StatefulWidget {
   
@@ -50,9 +51,27 @@ class CameraScreenState extends State<CameraScreen> {
     }
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        title: Text("Virtual Closet"),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: GestureDetector(
+          onTap: () {},
+          child: Icon(Icons.sort, color: Colors.black),
+        ),
+        brightness: Brightness.light,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                print("Pressed");
+                return Cart();
+              }));
+            },
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.black,
+            ),
+          )
+        ],
       ),
       body: Column(
       children: <Widget>[
@@ -67,6 +86,7 @@ class CameraScreenState extends State<CameraScreen> {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: null,
+      backgroundColor: Colors.black,
       child: Icon(Icons.photo_camera),
       ),
     );
