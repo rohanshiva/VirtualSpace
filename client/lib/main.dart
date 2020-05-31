@@ -1,4 +1,4 @@
-import 'package:client/auth/auth.dart';
+
 import 'package:flutter/material.dart';
 
 import 'display/shoe.dart';

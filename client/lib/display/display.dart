@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
 
 class Display extends StatefulWidget{
   Function _loadFunc;
@@ -29,12 +30,31 @@ class _DisplayState extends State<Display>{
         this.isLoading = false;
       });
       _query.addListener(() {
-          
+        setState(() {
+          this._data = runQuery(this._query.text);
+        });
         _listScroller.jumpTo(0.0);
       });
     });
     }
   }
+
+  List<Map> runQuery(String query){
+   return  _persisted.where((element){
+      String name = element['name'];
+      return name.startsWith(query);
+    }).toList();
+  } 
+
+
+  @override
+  void dispose(){
+    _listScroller.dispose();
+    _query.dispose();
+    super.dispose();
+  }
+
+
 
 
   Widget createTile(Map data){
@@ -69,7 +89,7 @@ class _DisplayState extends State<Display>{
                         onTap: () {
                           _listScroller.jumpTo(0.0);
                         },
-                        decoration: InputDecoration(labelText: "Shoe Name"),
+                        decoration: InputDecoration(labelText: "SName"),
                       ),
                     ),
                   ),
@@ -85,4 +105,18 @@ class _DisplayState extends State<Display>{
               ]
               )));
   }
+}
+
+
+Future<Map> fetchData() async {
+  Map<String, dynamic> data = {"Shoes":[], "Shirts":[]};
+ QuerySnapshot shoeData = await Firestore.instance.collection("Shoe").getDocuments();
+ shoeData.documents.forEach((DocumentSnapshot snapshot){
+   data['Shoes'].add(snapshot.data);
+ });
+ QuerySnapshot shirtData = await Firestore.instance.collection("Shirt").getDocuments();
+ shirtData.documents.forEach((DocumentSnapshot snapshot){
+   data['Shirt'].add(snapshot.data);
+ });
+  return data;
 }
