@@ -1,12 +1,16 @@
+import 'package:client/cameraScreen.dart';
+
 import './FadeAnimation.dart';
 import 'package:flutter/material.dart';
 import './global/global.dart';
+import './cameraScreen.dart';
+
 
 class Shoes extends StatefulWidget {
   final String image;
   final String id;
   final Map data;
-  const Shoes({Key key, this.image,  this.id, this.data}) : super(key: key);
+  const Shoes({Key key, this.image, this.id, this.data}) : super(key: key);
 
   @override
   _ShoesState createState() => _ShoesState();
@@ -196,7 +200,14 @@ class _ShoesState extends State<Shoes> {
                                                 top: 10),
                                             child: RaisedButton(
                                               padding: EdgeInsets.all(10),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                  print("Pressed");
+                                                  return CameraScreen();
+                                                }));
+                                              },
                                               color: Colors.white,
                                               textColor: Colors.black,
                                               child: Text('Try Now',

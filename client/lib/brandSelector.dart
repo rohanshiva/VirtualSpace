@@ -74,6 +74,23 @@ class _BrandSelectorState extends State<BrandSelector> {
             setState(() {
               _currentIndex = index;
             });
+            // print(widget.brands[_currentIndex]);
+            // switch(widget.brands[_currentIndex]) {
+            //   case "Shoes" : { Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+            //       return ShoeDisplayScreen();
+            //     }));}
+            //     break;
+               
+            //    case "Pants" : { Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+            //       return PantsDisplayScreen();
+            //     }));}
+            //     break;
+            //   default:
+            //      { Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+            //       return ShirtsDisplayScreen();
+            //     }));}
+            //     break;
+            // }
           },
           child: Text(
             brand,

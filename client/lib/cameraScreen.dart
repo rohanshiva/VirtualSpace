@@ -8,9 +8,9 @@ import './FadeAnimation.dart';
 import './Shoes.dart';
 
 class CameraScreen extends StatefulWidget {
-  final List<CameraDescription> cameras;
+  
 
-  CameraScreen(this.cameras);
+  CameraScreen();
 
   @override
   CameraScreenState createState() {
@@ -24,14 +24,17 @@ class CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    controller =
-        new CameraController(widget.cameras[0], ResolutionPreset.medium);
+    availableCameras().then((value) {
+      controller =
+        new CameraController(value[0], ResolutionPreset.medium);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
       setState(() {});
     });
+    });
+    
   }
 
   @override
@@ -59,7 +62,7 @@ class CameraScreenState extends State<CameraScreen> {
             child: new CameraPreview(controller),
           ),
         ),
-        BrandSelector(brands: ["Shoes","Pants","Shirts"]),
+        // BrandSelector(brands: ["Shoes","Pants","Shirts"]),
       ],
     ),
     floatingActionButton: FloatingActionButton(
