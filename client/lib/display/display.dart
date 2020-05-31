@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter/src/widgets/container.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 
 class Display extends StatefulWidget{
@@ -55,8 +56,6 @@ class _DisplayState extends State<Display>{
   }
 
 
-
-
   Widget createTile(Map data){
     return ListTile(
             leading: Icon(Icons.shop, color: Colors.black),
@@ -80,7 +79,7 @@ class _DisplayState extends State<Display>{
             width: screenWidth * .9,
             child: Column(children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                 child: Row(children: <Widget>[
                   Expanded(
                     child: Container(
@@ -89,19 +88,24 @@ class _DisplayState extends State<Display>{
                         onTap: () {
                           _listScroller.jumpTo(0.0);
                         },
-                        decoration: InputDecoration(labelText: "SName"),
+                        decoration: InputDecoration(labelText: "Name: "),
                       ),
                     ),
                   ),
                 ])),
-                ListView.builder(
-                  controller: _listScroller,
-                  itemCount: _data.length,
-                  shrinkWrap: true,
-                  itemBuilder:(context, i){
-                    return createTile(_data[i]);
-                  },
-                   )
+                Flexible(
+                  child: Container(
+                    child: ListView.builder(
+                      controller: _listScroller,
+                      itemCount: _data.length,
+                      shrinkWrap: true,
+                      itemBuilder:(context, i){
+                        return createTile(_data[i]);
+                      },
+                       ),
+                       height: screenHeight * 0.8,
+                  ),
+                )
               ]
               )));
   }
